@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 using CheckoutAPI.Model;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace CheckoutAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/basket")]
     [ApiController]
     public class BasketController : ControllerBase
     {
@@ -24,5 +26,7 @@ namespace CheckoutAPI.Controllers
         // GET {id}/products all products in a basket
         // PUT {id}/products update products in basket
         // DELETE {id}/products delete all products in basket
+
+        // 
     }
 }
