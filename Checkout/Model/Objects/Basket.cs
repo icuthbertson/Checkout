@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CheckoutAPI.Model
+namespace CheckoutAPI.Model.Objects
 {
     // Basket object with many-to-one relationship to a Customer
     public class Basket

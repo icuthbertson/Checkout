@@ -12,9 +12,9 @@ namespace CheckoutAPI.Controllers
     [ApiController]
     public class BasketController : ControllerBase
     {
-        private readonly BasketContext _context;
+        private readonly MockDatabaseContext _context;
 
-        public BasketController(BasketContext context)
+        public BasketController(MockDatabaseContext context)
         {
             _context = context;
         }

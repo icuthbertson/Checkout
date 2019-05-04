@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CheckoutAPI.Model
+namespace CheckoutAPI.Model.Objects
 {
     // Product object that defines products and their prices
     public class Product

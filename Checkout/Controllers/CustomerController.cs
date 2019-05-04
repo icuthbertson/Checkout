@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
+using CheckoutAPI.Model.Objects;
 using CheckoutAPI.Model;
 using System.Threading.Tasks;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace CheckoutAPI.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly BasketContext _context;
+        private readonly MockDatabaseContext _context;
 
-        public CustomerController(BasketContext context)
+        public CustomerController(MockDatabaseContext context)
         {
             _context = context;
 
@@ -81,22 +82,33 @@ namespace CheckoutAPI.Controllers
                 return NotFound();
             }
 
-            var basket = _context.Baskets.Where(o => o.Customer.Equals(customer)).FirstOrDefault();
+            var basket = await _context.Baskets.Where(o => o.Customer.Equals(customer)).FirstOrDefaultAsync();
 
             if (basket == null)
             {
                 return NotFound();
             }
 
-            var basketProducts = _context.BasketProducts.Where(o => o.Basket.Equals(basket)).ToList();
+            var basketProducts = await _context.BasketProducts.Where(o => o.Basket.Equals(basket)).ToListAsync();
+
+            var products = basketProducts.Join(
+                _context.Products,
+                basketProduct => basketProduct.Product.Id,
+                product => product.Id,
+                (basketProduct, product) => (
+                    ProductId: product.Id,
+                    Name: product.Name,
+                    Quantity: basketProduct.Quantity,
+                    Price: product.Price
+                ));
 
             var productViewModels = new List<GetProductViewModel>();
-            foreach (var basketProduct in basketProducts)
+            foreach (var product in products)
             {
-                productViewModels.Add(new GetProductViewModel { Id = basketProduct.Product.Id,
-                                                                Name = basketProduct.Product.Name, 
-                                                                Quantity = basketProduct.Quantity, 
-                                                                Price = basketProduct.Product.Price });
+                productViewModels.Add(new GetProductViewModel { Id = product.ProductId,
+                                                                Name = product.Name, 
+                                                                Quantity = product.Quantity, 
+                                                                Price = product.Price });
             }
 
             var basketViewModel = new GetBasketViewModel { Id = basket.Id,

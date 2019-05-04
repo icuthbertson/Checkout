@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CheckoutAPI.Model
+namespace CheckoutAPI.Model.Objects
 {
     // BasketProduct object with many-to-many relationship between Baskets and Products of varying quantities
     // Basket and Product would have a unique index to ensure a Basket can only ever have a single entry for each Product

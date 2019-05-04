@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
+using CheckoutAPI.Model.Objects;
 using CheckoutAPI.Model;
 using System.Threading.Tasks;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace CheckoutAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly BasketContext _context;
+        private readonly MockDatabaseContext _context;
 
-        public ProductController(BasketContext context)
+        public ProductController(MockDatabaseContext context)
         {
             _context = context;
         }

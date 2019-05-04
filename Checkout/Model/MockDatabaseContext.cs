@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using CheckoutAPI.Model.Objects;
 
 namespace CheckoutAPI.Model
 {
     // Context to be used by an in memory database
-    public class BasketContext : DbContext
+    public class MockDatabaseContext : DbContext
     {
-        public BasketContext(DbContextOptions<BasketContext> options)
+        public MockDatabaseContext(DbContextOptions<MockDatabaseContext> options)
             : base(options)
         {
         }
