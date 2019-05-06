@@ -11,10 +11,12 @@ namespace CheckoutAPI.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketService _basketService;
+        private readonly IProductService _productService;
 
-        public BasketController(IBasketService basketService)
+        public BasketController(IBasketService basketService, IProductService productService)
         {
             _basketService = basketService;
+            _productService = productService;
         }
 
         // required methods
@@ -38,6 +40,23 @@ namespace CheckoutAPI.Controllers
             }
 
             return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
+        }
+
+        // get all products and quantities held in a basket
+        // GET api/basket/1/products
+        [HttpGet("{basketId}/products")]
+        public async Task<ActionResult> GetBasketProduct(long basketId)
+        {
+            var basket = await _basketService.GetBacket(basketId);
+
+            if (basket == null)
+            {
+                return new JsonResult("Basket with id '" + basketId + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
+            }
+
+            var basketProductViewModels = await _productService.GetBasketProductViewModels(basket);
+
+            return new JsonResult(basketProductViewModels) { StatusCode = StatusCodes.Status200OK };
         }
     }
 }

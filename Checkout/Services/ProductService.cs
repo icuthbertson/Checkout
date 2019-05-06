@@ -89,11 +89,13 @@ namespace CheckoutAPI.Services
                 basketProduct => basketProduct.Product.Id,
                 product => product.Id,
                 (basketProduct, product) => (
+                    BasketProductId: basketProduct.Id,
+                    Quantity: basketProduct.Quantity,
                     ProductId: product.Id,
                     Name: product.Name,
-                    Quantity: basketProduct.Quantity,
                     Price: product.Price
-                )).Select(o => new GetBasketProductViewModel { Quantity = o.Quantity,
+                )).Select(o => new GetBasketProductViewModel { Id = o.BasketProductId,
+                                                               Quantity = o.Quantity,
                                                                Product = new GetProductViewModel { Id = o.ProductId,
                                                                                                    Name = o.Name,
                                                                                                    Price = o.Price } });
