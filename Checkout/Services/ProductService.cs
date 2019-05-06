@@ -103,11 +103,37 @@ namespace CheckoutAPI.Services
             return products;
         }
 
+        /*
+         * Get all BasketProduct objects for a basket
+         */
         public async Task<IEnumerable<BasketProduct>> GetBasketProducts(Basket basket)
         {
             return await _context.BasketProducts.Where(o => o.Basket.Equals(basket)).ToListAsync();
         }
 
+        /*
+         * Add a new BasketProduct
+         */
+        public async void AddBasketProduct(BasketProduct basketProduct)
+        {
+            _context.BasketProducts.Add(basketProduct);
+
+            await _context.SaveChangesAsync();
+        }
+
+        /*
+         * Update an existing BasketProduct
+         */
+         public async void UpdateBasketProduct(BasketProduct basketProduct)
+        {
+            _context.Entry(basketProduct).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+        }
+
+        /*
+         * Delete all BasketProducts in the list
+         */
         public async void DeleteBasketProducts(IEnumerable<BasketProduct> basketProducts)
         {
             foreach (var basketProduct in basketProducts)

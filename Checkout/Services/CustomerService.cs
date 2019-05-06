@@ -45,7 +45,7 @@ namespace CheckoutAPI.Services
                 return null;
             }
 
-            var basketViewModel = await _basketService.GetBacketViewModel(customer);
+            var basketViewModel = await _basketService.GetBasketViewModel(customer);
 
             var customerViewModel = new GetCustomerViewModel
             {

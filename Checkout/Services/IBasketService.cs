@@ -7,11 +7,11 @@ namespace CheckoutAPI.Services
 {
     public interface IBasketService
     {
-        Task<Basket> GetBacket(long id);
-        Task<Basket> GetBacket(Customer customer);
+        Task<Basket> GetBasket(long id);
+        Task<Basket> GetBasket(Customer customer);
 
-        Task<GetBasketViewModel> GetBacketViewModel(long id);
-        Task<GetBasketViewModel> GetBacketViewModel(Customer customer);
-        Task<GetBasketViewModel> GetBacketViewModel(Basket basket);
+        Task<GetBasketViewModel> GetBasketViewModel(long id);
+        Task<GetBasketViewModel> GetBasketViewModel(Customer customer);
+        Task<GetBasketViewModel> GetBasketViewModel(Basket basket);
     }
 }

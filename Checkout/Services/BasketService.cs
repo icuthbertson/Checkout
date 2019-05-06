@@ -22,7 +22,7 @@ namespace CheckoutAPI.Services
         /*
          * Get Basket object by Id
          */
-        public async Task<Basket> GetBacket(long id)
+        public async Task<Basket> GetBasket(long id)
         {
             return await _context.Baskets.FindAsync(id);
         }
@@ -30,7 +30,7 @@ namespace CheckoutAPI.Services
         /*
          * Get Basket object by the associated Customer
          */
-        public async Task<Basket> GetBacket(Customer customer)
+        public async Task<Basket> GetBasket(Customer customer)
         {
             return await _context.Baskets.Where(o => o.Customer.Equals(customer)).FirstOrDefaultAsync();
         }
@@ -38,23 +38,23 @@ namespace CheckoutAPI.Services
         /*
          * Get BasketViewModel by id of the Basket
          */
-        public async Task<GetBasketViewModel> GetBacketViewModel(long id)
+        public async Task<GetBasketViewModel> GetBasketViewModel(long id)
         {
-            return await GetBacketViewModel(await GetBacket(id));
+            return await GetBasketViewModel(await GetBasket(id));
         }
 
         /*
          * Get BasketViewModel by the associated Customer
          */
-        public async Task<GetBasketViewModel> GetBacketViewModel(Customer customer)
+        public async Task<GetBasketViewModel> GetBasketViewModel(Customer customer)
         {
-            return await GetBacketViewModel(await GetBacket(customer));
+            return await GetBasketViewModel(await GetBasket(customer));
         }
 
         /*
          * Get the BasketViewModel from the Required Basket
          */
-        public async Task<GetBasketViewModel> GetBacketViewModel(Basket basket)
+        public async Task<GetBasketViewModel> GetBasketViewModel(Basket basket)
         {
             if (basket == null)
             {
