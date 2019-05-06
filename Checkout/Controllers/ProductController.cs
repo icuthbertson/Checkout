@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 using CheckoutAPI.Model.Objects;
-using CheckoutAPI.Model;
 using System.Threading.Tasks;
-using System.Linq;
+using CheckoutAPI.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace CheckoutAPI.Controllers
 {
@@ -13,11 +12,11 @@ namespace CheckoutAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly MockDatabaseContext _context;
+        private readonly IProductService _productService;
 
-        public ProductController(MockDatabaseContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         // required methods
@@ -27,38 +26,29 @@ namespace CheckoutAPI.Controllers
         // POST / create new product
         // DELETE {id}/ delete product
 
-        // create a new product
-        // POST: api/product
-        [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
-        {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
-        }
-
         // get all products
         // GET: api/product
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            var allProductsViewModels = await _productService.GetProducts();
+
+            return new JsonResult(allProductsViewModels) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // get individual product
-        // GET: api/product/7
+        //// get individual product
+        //// GET: api/product/7
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(long id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var productViewModel = await _productService.GetProductViewModel(id);
 
-            if (product == null)
+            if (productViewModel == null)
             {
-                return NotFound();
+                return new JsonResult("Product with id '" + id + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
             }
 
-            return product;
+            return new JsonResult(productViewModel) { StatusCode = StatusCodes.Status200OK };
         }
     }
 }

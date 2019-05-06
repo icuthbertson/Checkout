@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System;
-using CheckoutAPI.Model;
 using System.Threading.Tasks;
-using System.Linq;
+using CheckoutAPI.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace CheckoutAPI.Controllers
 {
@@ -12,11 +10,11 @@ namespace CheckoutAPI.Controllers
     [ApiController]
     public class BasketController : ControllerBase
     {
-        private readonly MockDatabaseContext _context;
+        private readonly IBasketService _basketService;
 
-        public BasketController(MockDatabaseContext context)
+        public BasketController(IBasketService basketService)
         {
-            _context = context;
+            _basketService = basketService;
         }
 
         // required methods
@@ -27,6 +25,19 @@ namespace CheckoutAPI.Controllers
         // PUT {id}/products update products in basket
         // DELETE {id}/products delete all products in basket
 
-        // 
+        // get an individual basket
+        // GET: api/basket/2
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetBacket(long id)
+        {
+            var basketViewModel = await _basketService.GetBacketViewModel(id);
+
+            if (basketViewModel == null)
+            {
+                return new JsonResult("Basket with id '" + id + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
+            }
+
+            return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
+        }
     }
 }
