@@ -45,7 +45,10 @@ namespace CheckoutAPI.Controllers
 
             if (productViewModel == null)
             {
-                return new JsonResult("Product with id '" + id + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
+                return new JsonResult("Product with id '" + id + "' does not exist") 
+                { 
+                    StatusCode = StatusCodes.Status404NotFound 
+                };
             }
 
             return new JsonResult(productViewModel) { StatusCode = StatusCodes.Status200OK };

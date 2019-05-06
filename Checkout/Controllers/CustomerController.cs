@@ -56,7 +56,10 @@ namespace CheckoutAPI.Controllers
 
             if (customerViewModel == null)
             {
-                return new JsonResult("Customer with id '" + id + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
+                return new JsonResult("Customer with id '" + id + "' does not exist") 
+                { 
+                    StatusCode = StatusCodes.Status404NotFound 
+                };
             }
 
             return new JsonResult(customerViewModel) { StatusCode = StatusCodes.Status200OK };

@@ -103,14 +103,19 @@ namespace CheckoutAPI.Services
             return products;
         }
 
-        // helper methods
-
-        /*
-         * Get BacketProduct objects that links the required Basket to all products in it
-         */
-        private async Task<IEnumerable<BasketProduct>> GetBasketProducts(Basket basket)
+        public async Task<IEnumerable<BasketProduct>> GetBasketProducts(Basket basket)
         {
             return await _context.BasketProducts.Where(o => o.Basket.Equals(basket)).ToListAsync();
+        }
+
+        public async void DeleteBasketProducts(IEnumerable<BasketProduct> basketProducts)
+        {
+            foreach (var basketProduct in basketProducts)
+            {
+                _context.BasketProducts.Remove(basketProduct);
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

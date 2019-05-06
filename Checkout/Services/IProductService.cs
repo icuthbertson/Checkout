@@ -15,5 +15,8 @@ namespace CheckoutAPI.Services
         GetProductViewModel GetProductViewModel(Product product);
         Task<IEnumerable<GetProductViewModel>> GetAllProductsViewModels();
         Task<IEnumerable<GetBasketProductViewModel>> GetBasketProductViewModels(Basket basket);
+
+        Task<IEnumerable<BasketProduct>> GetBasketProducts(Basket basket);
+        void DeleteBasketProducts(IEnumerable<BasketProduct> basketProducts);
     }
 }

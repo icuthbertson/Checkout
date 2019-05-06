@@ -36,7 +36,10 @@ namespace CheckoutAPI.Controllers
 
             if (basketViewModel == null)
             {
-                return new JsonResult("Basket with id '" + id + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
+                return new JsonResult("Basket with id '" + id + "' does not exist") 
+                { 
+                    StatusCode = StatusCodes.Status404NotFound 
+                };
             }
 
             return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
@@ -44,19 +47,50 @@ namespace CheckoutAPI.Controllers
 
         // get all products and quantities held in a basket
         // GET api/basket/1/products
-        [HttpGet("{basketId}/products")]
-        public async Task<ActionResult> GetBasketProduct(long basketId)
+        [HttpGet("{id}/products")]
+        public async Task<ActionResult> GetBasketProducts(long id)
         {
-            var basket = await _basketService.GetBacket(basketId);
+            var basket = await _basketService.GetBacket(id);
 
             if (basket == null)
             {
-                return new JsonResult("Basket with id '" + basketId + "' does not exist") { StatusCode = StatusCodes.Status404NotFound };
+                return new JsonResult("Basket with id '" + id + "' does not exist") 
+                { 
+                    StatusCode = StatusCodes.Status404NotFound 
+                };
             }
 
             var basketProductViewModels = await _productService.GetBasketProductViewModels(basket);
 
             return new JsonResult(basketProductViewModels) { StatusCode = StatusCodes.Status200OK };
+        }
+
+        // delete all products from a basket
+        // DELETE api/basket/4/products
+        [HttpDelete("{id}/products")]
+        public async Task<ActionResult> DeleteBasketProducts(long id)
+        {
+            var basket = await _basketService.GetBacket(id);
+
+            if (basket == null)
+            {
+                return new JsonResult("Basket with id '" + id + "' does not exist") 
+                { 
+                    StatusCode = StatusCodes.Status404NotFound 
+                };
+            }
+
+            var basketProducts = await _productService.GetBasketProducts(basket);
+            try
+            {
+                _productService.DeleteBasketProducts(basketProducts);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return StatusCode(StatusCodes.Status204NoContent);
         }
     }
 }
