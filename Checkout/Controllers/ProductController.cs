@@ -5,6 +5,7 @@ using CheckoutAPI.Model.Objects;
 using System.Threading.Tasks;
 using CheckoutAPI.Services;
 using Microsoft.AspNetCore.Http;
+using CheckoutAPI.Model.DTO;
 
 namespace CheckoutAPI.Controllers
 {
@@ -19,13 +20,6 @@ namespace CheckoutAPI.Controllers
             _productService = productService;
         }
 
-        // required methods
-        // GET / all products
-        // GET {id}/ individual products
-        // PUT {id}/ update product info
-        // POST / create new product
-        // DELETE {id}/ delete product
-
         // get all products
         // GET: api/product
         [HttpGet]
@@ -36,8 +30,8 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(allProductsViewModels) { StatusCode = StatusCodes.Status200OK };
         }
 
-        //// get individual product
-        //// GET: api/product/7
+        // get individual product
+        // GET: api/product/7
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(long id)
         {
@@ -45,10 +39,29 @@ namespace CheckoutAPI.Controllers
 
             if (productViewModel == null)
             {
-                return new JsonResult("Product with id '" + id + "' does not exist") 
-                { 
-                    StatusCode = StatusCodes.Status404NotFound 
+                return new JsonResult("Product with id '" + id + "' does not exist")
+                {
+                    StatusCode = StatusCodes.Status404NotFound
                 };
+            }
+
+            return new JsonResult(productViewModel) { StatusCode = StatusCodes.Status200OK };
+        }
+
+        // create new product
+        // POST: api/product
+        [HttpPost]
+        public async Task<ActionResult> PostProduct(Product product)
+        {
+            GetProductViewModel productViewModel;
+
+            try
+            {
+                productViewModel = await _productService.CreateProduct(product);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             return new JsonResult(productViewModel) { StatusCode = StatusCodes.Status200OK };

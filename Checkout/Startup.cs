@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using CheckoutAPI.Model;
 using CheckoutAPI.Services;
+using CheckoutAPI.Model.Objects;
 
 namespace CheckoutAPI
 {
@@ -31,9 +32,10 @@ namespace CheckoutAPI
             services.AddDbContext<MockDatabaseContext>(opt => opt.UseInMemoryDatabase("CheckoutAPI"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddTransient<IBasketService, BasketService>();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<IProductService, ProductService>();
+            services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddSingleton<ITestService, TestService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

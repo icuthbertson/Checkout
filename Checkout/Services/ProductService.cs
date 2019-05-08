@@ -35,6 +35,17 @@ namespace CheckoutAPI.Services
         }
 
         /*
+         * Create new product
+         */
+        public async Task<GetProductViewModel> CreateProduct(Product product)
+        {
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            return GetProductViewModel(product);
+        }
+
+        /*
          * Get ProductViewModel by id of the required Product
          */
         public async Task<GetProductViewModel> GetProductViewModel(long id)
@@ -104,6 +115,14 @@ namespace CheckoutAPI.Services
         }
 
         /*
+        * Get BasketProduct object by id
+        */
+        public async Task<BasketProduct> GetBasketProduct(long id)
+        {
+            return await _context.BasketProducts.FindAsync(id);
+        }
+
+        /*
          * Get all BasketProduct objects for a basket
          */
         public async Task<IEnumerable<BasketProduct>> GetBasketProducts(Basket basket)
@@ -124,10 +143,19 @@ namespace CheckoutAPI.Services
         /*
          * Update an existing BasketProduct
          */
-         public async void UpdateBasketProduct(BasketProduct basketProduct)
+        public async void UpdateBasketProduct(BasketProduct basketProduct)
         {
             _context.Entry(basketProduct).State = EntityState.Modified;
 
+            await _context.SaveChangesAsync();
+        }
+
+        /*
+         * Delete specific BasketProduct
+         */
+        public async void DeleteBasketProduct(BasketProduct basketProduct)
+        {
+            _context.BasketProducts.Remove(basketProduct);
             await _context.SaveChangesAsync();
         }
 

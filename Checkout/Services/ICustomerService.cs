@@ -11,5 +11,6 @@ namespace CheckoutAPI.Services
 
         Task<GetCustomerViewModel> GetCustomerViewModel(long id);
         Task<GetCustomerViewModel> GetCustomerViewModel(Customer customer);
+        Task<GetCustomerViewModel> CreateCustomer(Customer customer);
     }
 }

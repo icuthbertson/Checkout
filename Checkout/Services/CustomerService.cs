@@ -56,5 +56,18 @@ namespace CheckoutAPI.Services
 
             return customerViewModel;
         }
+
+        /*
+         * Create a new customer
+         */
+        public async Task<GetCustomerViewModel> CreateCustomer(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            var basket = new Basket { Customer = customer };
+            _context.Baskets.Add(basket);
+            await _context.SaveChangesAsync();
+
+            return await GetCustomerViewModel(customer);
+        }
     }
 }
