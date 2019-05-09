@@ -93,21 +93,19 @@ namespace CheckoutAPI.Controllers
                 };
             }
 
-            if (!basketProduct.Basket.Id.Equals(basket.Id))
-            {
-                return new JsonResult("Basket with id '" + id + "' does not match the Basket referenced by the Basket Product with id '" + basketProduct.Id + "'")
-                {
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var existingBasketProduct = await _productService.GetBasketProduct(basketProduct.Id);
+            var basketProducts = await _productService.GetBasketProducts(basket);
 
             // if the product already exists in the basket add the new amount to the existing
-            if (existingBasketProduct != null)
+            if (basketProducts.Select(o => o.Product.Id).Contains(basketProduct.Product.Id))
             {
                 try
                 {
+                    var existingBasketProduct = basketProducts.FirstOrDefault(o => o.Product.Id.Equals(basketProduct.Product.Id));
+                    if (existingBasketProduct == null)
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError);
+                    }
+
                     existingBasketProduct.Quantity += basketProduct.Quantity;
                     _productService.UpdateBasketProduct(existingBasketProduct);
                 }
@@ -129,7 +127,8 @@ namespace CheckoutAPI.Controllers
                 }
             }
 
-            return StatusCode(StatusCodes.Status204NoContent);
+            var basketViewModel = await _basketService.GetBasketViewModel(id);
+            return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
         // update the quantity of a product already in the basket
@@ -166,19 +165,19 @@ namespace CheckoutAPI.Controllers
                 };
             }
 
-            if (!basketProduct.Basket.Id.Equals(basket.Id))
-            {
-                return new JsonResult("Basket with id '" + id + "' does not match the Basket referenced by the Basket Product with id '" + basketProduct.Id + "'")
-                {
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
             var existingBasketProduct = await _productService.GetBasketProduct(basketProduct.Id);
 
             if (existingBasketProduct == null)
             {
                 return new JsonResult("BasketProduct with id '" + basketProduct.Id + "'  does not already exist so cannot be updated")
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
+            }
+
+            if (!existingBasketProduct.Basket.Id.Equals(basket.Id))
+            {
+                return new JsonResult("Basket with id '" + basket.Id + "' does not match the Basket referenced by the Basket Product with id '" + existingBasketProduct.Id + "'")
                 {
                     StatusCode = StatusCodes.Status400BadRequest
                 };
@@ -194,7 +193,8 @@ namespace CheckoutAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return StatusCode(StatusCodes.Status204NoContent);
+            var basketViewModel = await _basketService.GetBasketViewModel(id);
+            return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
         // delete all products from a basket
@@ -222,7 +222,8 @@ namespace CheckoutAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return StatusCode(StatusCodes.Status204NoContent);
+            var basketViewModel = await _basketService.GetBasketViewModel(id);
+            return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
         // delete specific product from a basket
@@ -266,7 +267,8 @@ namespace CheckoutAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return StatusCode(StatusCodes.Status204NoContent);
+            var basketViewModel = await _basketService.GetBasketViewModel(basketId);
+            return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
     }
 }

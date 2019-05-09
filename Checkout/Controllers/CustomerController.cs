@@ -45,6 +45,14 @@ namespace CheckoutAPI.Controllers
         {
             GetCustomerViewModel customerViewModel;
 
+            if (string.IsNullOrEmpty(customer.Name))
+            {
+                return new JsonResult("Customer is missing 'Name' field")
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
+            }
+
             try
             {
                 customerViewModel = await _customerService.CreateCustomer(customer);

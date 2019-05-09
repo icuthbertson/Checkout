@@ -55,6 +55,22 @@ namespace CheckoutAPI.Controllers
         {
             GetProductViewModel productViewModel;
 
+            if (string.IsNullOrEmpty(product.Name))
+            {
+                return new JsonResult("Product is missing 'Name' field")
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
+            }
+
+            if (product.Price < 0.0)
+            {
+                return new JsonResult("Product Price cannot be less than 0 (free)")
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
+            }
+
             try
             {
                 productViewModel = await _productService.CreateProduct(product);

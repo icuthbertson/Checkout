@@ -35,7 +35,6 @@ namespace CheckoutAPI
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddSingleton<ITestService, TestService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
