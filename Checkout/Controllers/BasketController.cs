@@ -21,8 +21,32 @@ namespace CheckoutAPI.Controllers
             _productService = productService;
         }
 
-        // get an individual basket
-        // GET: api/basket/2
+        /* get an individual basket
+         * GET: api/basket/2
+         * RESPONSE: 200 OK
+         * {
+         *    "id": 1,
+         *    "products": [
+         *       {
+         *         "id": 2,
+         *         "quantity": 5,
+         *         "product": {
+         *           "id": 1,
+         *           "name": "Product 1",
+         *           "price": 6.55
+         *         }
+         *       },
+         *       {
+         *         "id": 3,
+         *         "quantity": 10,
+         *         "product": {
+         *           "id": 2,
+         *           "name": "Product 2",
+         *           "price": 10
+         *        }
+         *    ]
+         * }       
+         */
         [HttpGet("{id}")]
         public async Task<ActionResult> GetBacket(long id)
         {
@@ -39,8 +63,30 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // get all products and quantities held in a basket
-        // GET api/basket/1/products
+        /* get all products and quantities held in a basket
+         * GET api/basket/1/products
+         * RESPONSE: 200 OK        
+         * [
+         *    {
+         *        "id": 2,
+         *        "quantity": 5,
+         *        "product": {
+         *           "id": 1,
+         *           "name": "Product 1",
+         *           "price": 6.55
+         *        }
+         *     },
+         *     {
+         *        "id": 3,
+         *        "quantity": 10,
+         *        "product": {
+         *           "id": 2,
+         *           "name": "Product 2",
+         *           "price": 10
+         *        }
+         *    }
+         * ]
+         */
         [HttpGet("{id}/products")]
         public async Task<ActionResult> GetBasketProducts(long id)
         {
@@ -59,8 +105,31 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(basketProductViewModels) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // add a new item to a basket or increase the quantity of a product already in a basket
-        // POST api/basket/3/products
+        /* add a new item to a basket or increase the quantity of a product already in a basket
+         * POST api/basket/1/products
+         * BODY:
+         * {
+         *    "quantity": 10,
+         *    "product": {
+         *       "id": 1
+         *    }
+         * }
+         * REPONSE: 200 OK
+         * {
+         *    "id": 1,
+         *    "products": [
+         *       {
+         *         "id": 2,
+         *         "quantity": 10,
+         *         "product": {
+         *           "id": 1,
+         *           "name": "Product 1",
+         *           "price": 6.55
+         *         }
+         *       }
+         *    ]
+         * }  
+         */
         [HttpPost("{id}/products")]
         public async Task<ActionResult> PostBasketProduct(long id, BasketProduct basketProduct)
         {
@@ -131,8 +200,42 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // update the quantity of a product already in the basket
-        // PUT api/basket/2
+        /* update the quantity of a product already in the basket
+         * PUT api/basket/1/products
+         * BODY:
+         * {
+         *   "id": 2,
+         *   "quantity": 5,
+         *   "product": {
+         *       "id": 1,
+         *       "name": "Product 1",
+         *       "price": 6.55
+         *   }
+         * } 
+         * REPONSE: 200 OK
+         * {
+         *    "id": 1,
+         *    "products": [
+         *       {
+         *         "id": 2,
+         *         "quantity": 5,
+         *         "product": {
+         *           "id": 1,
+         *           "name": "Product 1",
+         *           "price": 6.55
+         *         }
+         *       },
+         *       {
+         *         "id": 3,
+         *         "quantity": 10,
+         *         "product": {
+         *           "id": 2,
+         *           "name": "Product 2",
+         *           "price": 10
+         *        }
+         *    ]
+         * }  
+         */
         [HttpPut("{id}/products")]
         public async Task<ActionResult> UpdateBasketProduct(long id, BasketProduct basketProduct)
         {
@@ -197,8 +300,14 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // delete all products from a basket
-        // DELETE api/basket/4/products
+        /* delete all products from a basket
+         * DELETE api/basket/1/products
+         * REPONSE: 200 OK
+         * {
+         *   "id": 1,
+         *   "products": []
+         * }        
+         */
         [HttpDelete("{id}/products")]
         public async Task<ActionResult> DeleteBasketProducts(long id)
         {
@@ -226,8 +335,24 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(basketViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // delete specific product from a basket
-        // DELETE api/basket/4/products/2
+        /* delete specific product from a basket
+         * DELETE api/basket/1/products/2
+         * REPONSE: 200 OK
+         * {
+         *  "id": 1,
+         *  "products": [
+         *    {
+         *        "id": 3,
+         *        "quantity": 7,
+         *        "product": {
+         *            "id": 1,
+         *            "name": "Product 3",
+         *            "price": 10.75
+         *        }
+         *    }
+         *  ]
+         * }        
+         */
         [HttpDelete("{basketId}/products/{basketProductId}")]
         public async Task<ActionResult> DeleteBasketProduct(long basketId, long basketProductId)
         {

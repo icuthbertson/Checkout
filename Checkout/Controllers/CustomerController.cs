@@ -20,8 +20,36 @@ namespace CheckoutAPI.Controllers
             _customerService = customerService;
         }
 
-        // get an individual customer
-        // GET: api/customer/3
+        /* get an individual customer
+         * GET: api/customer/3
+         * RESPONSE: 200 OK
+         * {
+         *   "id": 1,
+         *   "name": "Test Customer",
+         *   "basket": {
+         *     "id": 1,
+         *     "products": [
+         *       {
+         *         "id": 2,
+         *         "quantity": 5,
+         *         "product": {
+         *           "id": 1,
+         *           "name": "Product 1",
+         *           "price": 6.55
+         *         }
+         *       },
+         *       {
+         *         "id": 3,
+         *         "quantity": 10,
+         *         "product": {
+         *           "id": 2,
+         *           "name": "Product 2",
+         *           "price": 10
+         *        }
+         *    ]
+         *   }
+         * }       
+         */
         [HttpGet("{id}")]
         public async Task<ActionResult> GetCustomer(long id)
         {
@@ -38,8 +66,22 @@ namespace CheckoutAPI.Controllers
             return new JsonResult(customerViewModel) { StatusCode = StatusCodes.Status200OK };
         }
 
-        // create a new customer
-        // POST: api/customer
+        /* create a new customer
+         * POST: api/customer
+         * BODY:
+         * {
+         *   "name": "Test Customer"
+         * } 
+         * RESPONSE: 200 OK
+         * {
+         *   "id": 1,
+         *   "name": "Test Customer",
+         *   "basket": {
+         *       "id": 1,
+         *       "products": []
+         *   }
+         * }       
+         */
         [HttpPost]
         public async Task<ActionResult> PostCustomer(Customer customer)
         {
