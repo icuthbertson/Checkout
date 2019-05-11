@@ -48,7 +48,7 @@ namespace CheckoutAPI.Controllers
          * }       
          */
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetBacket(long id)
+        public async Task<ActionResult> GetBasket(long id)
         {
             var basketViewModel = await _basketService.GetBasketViewModel(id);
 
