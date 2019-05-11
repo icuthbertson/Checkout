@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Runtime.Serialization;
 
 namespace Checkout.Model.Objects
@@ -14,5 +15,13 @@ namespace Checkout.Model.Objects
 
         [DataMember(Name = "price")]
         public double Price { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0} for {1}\n", Name, Price);
+
+            return sb.ToString();
+        }
     }
 }
