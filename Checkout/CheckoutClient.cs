@@ -32,19 +32,17 @@ namespace Checkout
             _productsSerializer = new DataContractJsonSerializer(typeof(IEnumerable<Product>));
         }
 
-        /*
-         * get a customer by its id
-         */       
-        public async Task<Customer> GetCustomer(long customerId)
+        /// <summary>Get a customer by its <paramref name="id"/></summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
+        public async Task<Customer> GetCustomer(long id)
         {
-            var endpoint = string.Format(_uri + _customerEndpoint, customerId);
+            var endpoint = string.Format(_uri + _customerEndpoint, id);
 
             return await SendRequestAndParseReponse<Customer>(HttpMethod.Put, endpoint, _customerSerializer);
         }
 
-        /*
-         * create a new customer
-         */       
+        /// <summary>Create a new customer with required <paramref name="name"/></summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         public async Task<Customer> CreateCustomer(string name)
         {
             var endpoint = string.Format(_uri + _customerEndpoint, "");
@@ -56,19 +54,17 @@ namespace Checkout
             return await SendRequestAndParseReponse<Customer>(HttpMethod.Post, endpoint, content, _customerSerializer);
         }
 
-        /*
-         * get a basket by its id
-         */       
-        public async Task<Basket> GetBasket(long basketId)
+        /// <summary>Get a basket by its <paramref name="id"/></summary>  
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
+        public async Task<Basket> GetBasket(long id)
         {
-            var endpoint = string.Format(_uri + _basketEndpoint, basketId);
+            var endpoint = string.Format(_uri + _basketEndpoint, id);
 
             return await SendRequestAndParseReponse<Basket>(HttpMethod.Get, endpoint, _basketSerializer);
         }
 
-        /*
-         * add a quantity of a product to a basket
-         */       
+        /// <summary>Add a <paramref name="quantity"/> of a <paramref name="product"/> to a <paramref name="basket"/></summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         public async Task<Basket> AddProductToBasket(Basket basket, long quantity, Product product)
         {
             var endpoint = string.Format(_uri + _basketProductsEndpoint, basket.Id, "");
@@ -80,9 +76,8 @@ namespace Checkout
             return await SendRequestAndParseReponse<Basket>(HttpMethod.Post, endpoint, content, _basketSerializer);
         }
 
-        /*
-         * update the quantity of a product in a basket
-         */       
+        /// <summary>Update the quantity of a product in a <paramref name="basket"/></summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         public async Task<Basket> UpdateQuantityOfProductInBasket(Basket basket, BasketProduct basketProduct)
         {
             var endpoint = string.Format(_uri + _basketProductsEndpoint, basket.Id, "");
@@ -92,9 +87,8 @@ namespace Checkout
             return await SendRequestAndParseReponse<Basket>(HttpMethod.Put, endpoint, content, _basketSerializer);
         }
 
-        /*
-         * empty a basket
-         */       
+        /// <summary>Empty a <paramref name="basket"/></summary>  
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         public async Task<Basket> EmptyBasket(Basket basket)
         {
             var endpoint = string.Format(_uri + _basketProductsEndpoint, basket.Id, "");
@@ -102,9 +96,8 @@ namespace Checkout
             return await SendRequestAndParseReponse<Basket>(HttpMethod.Delete, endpoint, _basketSerializer);
         }
 
-        /*
-         * remove a product from a basket
-         */       
+        /// <summary>Remove a product from a <paramref name="basket"/></summary> 
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>   
         public async Task<Basket> RemoveProductFromBasket(Basket basket, BasketProduct basketProduct)
         {
             var endpoint = string.Format(_uri + _basketProductsEndpoint, basket.Id, basketProduct.Id);
@@ -112,9 +105,8 @@ namespace Checkout
             return await SendRequestAndParseReponse<Basket>(HttpMethod.Delete, endpoint, _basketSerializer);
         }
 
-        /*
-         * get all products
-         */       
+        /// <summary>Get all products</summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         public async Task<IEnumerable<Product>> GetProducts()
         {
             var endpoint = string.Format(_uri + _productEndpoint, "");
@@ -122,19 +114,17 @@ namespace Checkout
             return await SendRequestAndParseReponse<IEnumerable<Product>>(HttpMethod.Get, endpoint, _productsSerializer);
         }
 
-        /*
-         * get a product by its id
-         */       
-        public async Task<Product> GetProduct(long productId)
+        /// <summary>Get a product by its <paramref name="id"/></summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
+        public async Task<Product> GetProduct(long id)
         {
-            var endpoint = string.Format(_uri + _productEndpoint, productId);
+            var endpoint = string.Format(_uri + _productEndpoint, id);
 
             return await SendRequestAndParseReponse<Product>(HttpMethod.Get, endpoint, _productSerializer);
         }
 
-        /*
-         * create a new product
-         */       
+        /// <summary>Create a new product with required <paramref name="name"/> and <paramref name="price"/></summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         public async Task<Product> CreateProduct(string name, double price)
         {
             var endpoint = string.Format(_uri + _productEndpoint, "");
@@ -148,19 +138,14 @@ namespace Checkout
 
         #region helper methods
 
-        /*
-         * generic method to send http request and parse the reponse object
-         */
+        /// <summary>Generic method to send http request and parse the reponse object</summary>
         private async Task<T> SendRequestAndParseReponse<T>(HttpMethod httpMethod, string endpoint, DataContractJsonSerializer jsonSerializer)
         {
             return await SendRequestAndParseReponse<T>(httpMethod, endpoint, null, jsonSerializer);
         }
 
-        /*
-         * generic method to send http request and parse the reponse object
-         * 
-         * throws runtime excpetion if an error response code is recieved
-         */       
+        /// <summary>Generic method to send http request and parse the reponse object</summary>
+        /// <exception cref="Exception">Throws runtime excpetion if an error response code is recieved</exception>
         private async Task<T> SendRequestAndParseReponse<T>(HttpMethod httpMethod, string endpoint, StringContent content, DataContractJsonSerializer jsonSerializer)
         {
             var request = new HttpRequestMessage(httpMethod, endpoint)
@@ -182,9 +167,7 @@ namespace Checkout
             throw new Exception(response.StatusCode + ": " + response.Content);
         }
 
-        /*
-         * generic method to convert object to Json string
-         */       
+        /// <summary>Generic method to convert object to Json string</summary>
         private StringContent ObjectToJson<T>(DataContractJsonSerializer serializer, T obj)
         {
             MemoryStream ms = new MemoryStream();
@@ -197,9 +180,7 @@ namespace Checkout
             return new StringContent(Encoding.UTF8.GetString(json, 0, json.Length), Encoding.UTF8, "application/json");
         }
 
-        /*
-         * generic method to convert Json string in HTTP response to object
-         */       
+        /// <summary>Generic method to convert Json string in HTTP response to object</summary> 
         private async Task<T> JsonToObject<T>(DataContractJsonSerializer serializer, HttpResponseMessage response)
         {
             var obj = serializer.ReadObject(await response.Content.ReadAsStreamAsync());

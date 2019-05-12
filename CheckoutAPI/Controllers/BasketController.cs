@@ -22,7 +22,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* get an individual basket
-         * GET: api/basket/2
+         * GET: api/basket/2/
          * RESPONSE: 200 OK
          * {
          *    "id": 1,
@@ -64,7 +64,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* get all products and quantities held in a basket
-         * GET api/basket/1/products
+         * GET api/basket/1/products/
          * RESPONSE: 200 OK        
          * [
          *    {
@@ -106,7 +106,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* add a new item to a basket or increase the quantity of a product already in a basket
-         * POST api/basket/1/products
+         * POST api/basket/1/products/
          * BODY:
          * {
          *    "quantity": 10,
@@ -201,7 +201,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* update the quantity of a product already in the basket
-         * PUT api/basket/1/products
+         * PUT api/basket/1/products/
          * BODY:
          * {
          *   "id": 2,
@@ -301,7 +301,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* delete all products from a basket
-         * DELETE api/basket/1/products
+         * DELETE api/basket/1/products/
          * REPONSE: 200 OK
          * {
          *   "id": 1,
@@ -336,7 +336,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* delete specific product from a basket
-         * DELETE api/basket/1/products/2
+         * DELETE api/basket/1/products/2/
          * REPONSE: 200 OK
          * {
          *  "id": 1,

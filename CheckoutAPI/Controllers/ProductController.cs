@@ -21,7 +21,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* get all products
-         * GET: api/product
+         * GET: api/product/
          * RESPONSE: 200 OK
          * [
          *      {
@@ -50,7 +50,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* get individual product
-         * GET: api/product/7
+         * GET: api/product/7/
          * RESPONSE: 200 OK
          * {
          *   "id": 1,
@@ -75,7 +75,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* create new product
-         * POST: api/product
+         * POST: api/product/
          * BODY:
          * {
          *   "name": "Product 1",

@@ -21,7 +21,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* get an individual customer
-         * GET: api/customer/3
+         * GET: api/customer/3/
          * RESPONSE: 200 OK
          * {
          *   "id": 1,
@@ -67,7 +67,7 @@ namespace CheckoutAPI.Controllers
         }
 
         /* create a new customer
-         * POST: api/customer
+         * POST: api/customer/
          * BODY:
          * {
          *   "name": "Test Customer"
