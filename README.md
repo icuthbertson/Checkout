@@ -32,7 +32,7 @@ Also added a docker file to containerize the CheckoutAPI project so it could be 
 Provide methods to make use of all the API endpoints.  
 Also provides model object for results and calls that get serialize and deserialize as required.  
 
-## Followed tutorials:   
+## Tutorials Followed:   
 https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-2.2&tabs=visual-studio-mac  
 https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.2  
 https://docs.microsoft.com/en-us/dotnet/core/docker/build-container  
