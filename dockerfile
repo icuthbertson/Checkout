@@ -1,7 +1,8 @@
-﻿FROM microsoft/dotnet:2.2-sdk AS base
+﻿FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS base
 WORKDIR /CheckoutAPI
+EXPOSE 80
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 COPY Checkout.sln ./
 COPY CheckoutAPI/CheckoutAPI.csproj CheckoutAPI/
